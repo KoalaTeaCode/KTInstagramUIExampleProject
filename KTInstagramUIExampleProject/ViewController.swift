@@ -10,9 +10,12 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    var postView: PostView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        postView = PostView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 960.calculateHeight()))
+        self.view.addSubview(postView)
     }
 
     override func didReceiveMemoryWarning() {
@@ -20,6 +23,8 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
 }
 

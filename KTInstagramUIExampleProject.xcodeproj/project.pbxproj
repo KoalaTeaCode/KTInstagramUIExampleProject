@@ -13,6 +13,12 @@
 		1662321A1F42297900B0202A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 166232191F42297900B0202A /* Assets.xcassets */; };
 		1662321D1F42297900B0202A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1662321B1F42297900B0202A /* LaunchScreen.storyboard */; };
 		166232281F42297900B0202A /* KTInstagramUIExampleProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166232271F42297900B0202A /* KTInstagramUIExampleProjectTests.swift */; };
+		166232331F42299600B0202A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166232321F42299600B0202A /* Extensions.swift */; };
+		166232351F4230DA00B0202A /* TopBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166232341F4230DA00B0202A /* TopBarView.swift */; };
+		166232371F423A4800B0202A /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166232361F423A4800B0202A /* ButtonView.swift */; };
+		166232391F423C0A00B0202A /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166232381F423C0A00B0202A /* PostView.swift */; };
+		1662323B1F423FB100B0202A /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1662323A1F423FB100B0202A /* CommentsView.swift */; };
+		166A292D1F43616C00C0E932 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166A292C1F43616C00C0E932 /* CustomViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +42,12 @@
 		166232231F42297900B0202A /* KTInstagramUIExampleProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KTInstagramUIExampleProjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		166232271F42297900B0202A /* KTInstagramUIExampleProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KTInstagramUIExampleProjectTests.swift; sourceTree = "<group>"; };
 		166232291F42297900B0202A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		166232321F42299600B0202A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		166232341F4230DA00B0202A /* TopBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopBarView.swift; sourceTree = "<group>"; };
+		166232361F423A4800B0202A /* ButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
+		166232381F423C0A00B0202A /* PostView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
+		1662323A1F423FB100B0202A /* CommentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
+		166A292C1F43616C00C0E932 /* CustomViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,12 +89,14 @@
 		166232111F42297900B0202A /* KTInstagramUIExampleProject */ = {
 			isa = PBXGroup;
 			children = (
-				166232121F42297900B0202A /* AppDelegate.swift */,
+				1662323C1F4253A100B0202A /* Core */,
+				166232321F42299600B0202A /* Extensions.swift */,
 				166232141F42297900B0202A /* ViewController.swift */,
-				166232161F42297900B0202A /* Main.storyboard */,
-				166232191F42297900B0202A /* Assets.xcassets */,
-				1662321B1F42297900B0202A /* LaunchScreen.storyboard */,
-				1662321E1F42297900B0202A /* Info.plist */,
+				166232381F423C0A00B0202A /* PostView.swift */,
+				166232341F4230DA00B0202A /* TopBarView.swift */,
+				166232361F423A4800B0202A /* ButtonView.swift */,
+				1662323A1F423FB100B0202A /* CommentsView.swift */,
+				166A292C1F43616C00C0E932 /* CustomViews.swift */,
 			);
 			path = KTInstagramUIExampleProject;
 			sourceTree = "<group>";
@@ -94,6 +108,18 @@
 				166232291F42297900B0202A /* Info.plist */,
 			);
 			path = KTInstagramUIExampleProjectTests;
+			sourceTree = "<group>";
+		};
+		1662323C1F4253A100B0202A /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				166232121F42297900B0202A /* AppDelegate.swift */,
+				166232161F42297900B0202A /* Main.storyboard */,
+				166232191F42297900B0202A /* Assets.xcassets */,
+				1662321B1F42297900B0202A /* LaunchScreen.storyboard */,
+				1662321E1F42297900B0202A /* Info.plist */,
+			);
+			name = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -202,7 +228,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				166232151F42297900B0202A /* ViewController.swift in Sources */,
+				166232331F42299600B0202A /* Extensions.swift in Sources */,
+				166232371F423A4800B0202A /* ButtonView.swift in Sources */,
+				166232351F4230DA00B0202A /* TopBarView.swift in Sources */,
+				166232391F423C0A00B0202A /* PostView.swift in Sources */,
+				166A292D1F43616C00C0E932 /* CustomViews.swift in Sources */,
 				166232131F42297900B0202A /* AppDelegate.swift in Sources */,
+				1662323B1F423FB100B0202A /* CommentsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,6 +446,7 @@
 				1662322E1F42297900B0202A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1662322F1F42297900B0202A /* Build configuration list for PBXNativeTarget "KTInstagramUIExampleProjectTests" */ = {
 			isa = XCConfigurationList;
@@ -422,6 +455,7 @@
 				166232311F42297900B0202A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
