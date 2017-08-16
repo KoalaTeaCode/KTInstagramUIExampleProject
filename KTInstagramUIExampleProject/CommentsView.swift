@@ -10,17 +10,13 @@ import UIKit
 
 class CommentsView: UIView {
     
-    // Likes
     var likeLabel: UILabel!
     
-    // Description
     var descriptionLabel: UILabel!
     var moreLabel: UILabel!
     
-    // View All Comments
     var viewAllCommentsLabel: UILabel!
     
-    // Time View
     var timeLabel: UILabel!
     
     override init(frame: CGRect) {
