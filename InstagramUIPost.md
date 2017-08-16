@@ -437,3 +437,5 @@ The KoalaTea Github: https://github.com/KoalaTeaCode
 My Twitter: https://twitter.com/TheMrHolliday
 
 My Reddit: https://www.reddit.com/user/Misterholliday/
+
+[INSERT NEWSLETTER LINK HERE]
