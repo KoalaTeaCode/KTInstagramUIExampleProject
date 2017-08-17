@@ -112,8 +112,7 @@ UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 50)
 ```
 Width and height are self explanatory. "x:" is where the origin point(Top left by default) of our view starts on the X Axis(Horizontal). "y:" is where the origin point(Top left by default) of our view starts on the Y Axis(Vertical). (See the diagram below)
 
-@TODO:
-[Insert Diagram Here]
+![Diagram](http://i.imgur.com/oRrUS6q.png)
 
 Frames also have a min, mid, and max property for the x and y values.
 ```swift
@@ -128,15 +127,16 @@ We can use these properties to get the top left point, top middle point, and top
 # Sketch design
 For the actual view we will recreate in Xcode, I have chosen the Post view from Instagram. This is a post I made of my puppy Bandit growing up way too fast. The design is simple and with this we can see how Instagram would not use AutoLayout at all in their app.
 
-I won't go too in-depth into Sketch or our design. You can examine the image below and see that I have used a plugin called [SketchMeasure](@TODO: INSERT LINK HERE) to measure the height, width, and distance between views for every part of our design. You will be able to see pretty easily how knowing all these measurements will help us in coding the views.
+I won't go too in-depth into Sketch or our design. You can examine the image below and see that I have used a plugin called [SketchMeasure](http://utom.design/measure/) to measure the height, width, and distance between views for every part of our design. You will be able to see pretty easily how knowing all these measurements will help us in coding the views.
 
-@TODO:
-[Insert POST IMAGE HERE]
+![Full Design](http://i.imgur.com/N8Erfbp.png)
 
 # Coding the views
 Finally! Let's stop talking about concepts and get down to the code. 
 
 ## Coding the Top Bar
+![Top Bar View](http://i.imgur.com/nCo0VGf.png)
+
 Create a new Swift file or create a UIView and call it "TopBarView". Then we'll create the class and add all our views. You can initialize them here or make the views optional and initialize them later, either works.
 ```swift
 import UIKit
@@ -204,6 +204,8 @@ The inset is 10 from the right side of the userImageView which we can find by us
 And we're finished with the TopBarView.
 
 ## Coding the Button View
+![Button View](http://i.imgur.com/Hcf6MSf.png)
+
 * For the Button View we don't do anything too crazy, so I'm just going to throw the code for the class up here.
 ```swift
 import UIKit
@@ -247,6 +249,8 @@ class ButtonView: UIView {
 }
 ```
 ## Coding the Comments View
+![Comments View](http://i.imgur.com/g5TdKV1.png)
+
 The comments view isn't super complicated but we do a few new concepts that I'll cover. But of course every view starts the same.
 ```swift
 import UIKit
