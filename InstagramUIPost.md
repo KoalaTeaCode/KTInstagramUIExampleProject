@@ -169,7 +169,7 @@ userImageView.image = #imageLiteral(resourceName: "userImage")
 
 self.addSubview(userImageView)
 ```
-The view will be 10px from the top and 10px from the left of the superview which is the class we're creating now. Also we set the width and height BOTH to 32.calculateHeight() because this view will need to be a circle and if we calculate the width and height separately we will get more of an oval on different views.
+The view will be 10 points from the top and 10 points from the left of the superview which is the class we're creating now. Also we set the width and height BOTH to 32.calculateHeight() because this view will need to be a circle and if we calculate the width and height separately we will get more of an oval on different views.
 
 Then we set our corner radius to be the height of the userImageView divided by 2. That will round the view.
 
@@ -191,7 +191,7 @@ userLabel.font = UIFont.systemFont(ofSize: 15.calculateWidth())
 self.addSubview(userLabel)
 ```
 
-We set our frame just as before. Again we are setting a 10px inset from the top of the superview and instead of snapping our userLabel to the right of our userImageView we use an inset of 52.
+We set our frame just as before. Again we are setting a 10 point inset from the top of the superview and instead of snapping our userLabel to the right of our userImageView we use an inset of 52.
 
 Then we set the text and can scale the font by using our calculateWidth extension.
 
@@ -293,7 +293,7 @@ likeLabel.text = String(likesCount) + " " + likesString
 self.addSubview(likeLabel)
 ```
 
-We create a variable called "labelsWidth" because all our labels will have the same width. If you look at the Sketch design you can see that there is a 16px inset on both sides of each label so we just multiply 16 with a calculated width by 2 and subtract the total frame width by the outcome.
+We create a variable called "labelsWidth" because all our labels will have the same width. If you look at the Sketch design you can see that there is a 16 point inset on both sides of each label so we just multiply 16 with a calculated width by 2 and subtract the total frame width by the outcome.
 
 Next we create our description label:
 ```swift

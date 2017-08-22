@@ -8,30 +8,26 @@
 
 import UIKit
 
-class CommentsView: UIView {
+class CommentsView: KTResponsiveView {
     
-    var likeLabel: UILabel!
-    
-    var descriptionLabel: UILabel!
-    var moreLabel: UILabel!
-    
-    var viewAllCommentsLabel: UILabel!
-    
-    var timeLabel: UILabel!
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        let labelsWidth = self.frame.width - (16.calculateWidth() * 2)
+    var likeLabel: KTLabel!
+    var descriptionLabel: KTLabel!
+    var moreLabel: KTLabel!
+    var viewAllCommentsLabel: KTLabel!
+    var timeLabel: KTLabel!
+
+    override func performLayout() {
+        let labelsWidth: CGFloat = 375 - (16 * 2)
         
-        likeLabel = UILabel(frame: CGRect(x: 16.calculateWidth(), y: 0, width: labelsWidth, height: 18.calculateHeight()))
+        likeLabel = KTLabel(leftInset: 16, width: labelsWidth, height: 18)
         let likesCount = 287
         let likesString = "likes"
         
-        likeLabel.font = UIFont.boldSystemFont(ofSize: 15.calculateHeight())
+        likeLabel.font = UIFont.boldSystemFont(ofSize: 15.scaleForScreenWidth())
         likeLabel.text = String(likesCount) + " " + likesString
         self.addSubview(likeLabel)
         
-        descriptionLabel = UILabel(frame: CGRect(x: 16.calculateWidth(), y: likeLabel.frame.maxY, width: labelsWidth, height: 42.calculateHeight()))
+        descriptionLabel = KTLabel(origin: likeLabel.bottomLeftPoint(), width: labelsWidth, height: 42)
         let username = "themisterholliday"
         let description = "Hey this is an awesome description"
         
@@ -40,11 +36,11 @@ class CommentsView: UIView {
         let fullMutableString = NSMutableAttributedString()
         let usernameMutableString = NSMutableAttributedString(
             string: username,
-            attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 15.calculateHeight())])
+            attributes: [NSAttributedStringKey.font:UIFont.boldSystemFont(ofSize: 15.scaleForScreenWidth())])
         let spaceString = NSMutableAttributedString(string: " ")
         let descMutableString = NSMutableAttributedString(
             string: description,
-            attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 15.calculateHeight())])
+            attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 15.scaleForScreenWidth())])
         fullMutableString.append(usernameMutableString)
         fullMutableString.append(spaceString)
         fullMutableString.append(descMutableString)
@@ -52,14 +48,14 @@ class CommentsView: UIView {
         descriptionLabel.attributedText = fullMutableString
         self.addSubview(descriptionLabel)
         
-        viewAllCommentsLabel = UILabel(frame: CGRect(x: 16.calculateWidth(), y: descriptionLabel.frame.maxY, width: labelsWidth, height: 20.calculateHeight()))
+        viewAllCommentsLabel = KTLabel(origin: descriptionLabel.bottomLeftPoint(), width: labelsWidth, height: 20)
         viewAllCommentsLabel.text = "View all 5 comments"
-        viewAllCommentsLabel.font = UIFont.systemFont(ofSize: 14.calculateHeight())
+        viewAllCommentsLabel.font = UIFont.systemFont(ofSize: 14.scaleForScreenWidth())
         self.addSubview(viewAllCommentsLabel)
         
-        timeLabel = UILabel(frame: CGRect(x: 16.calculateWidth(), y: viewAllCommentsLabel.frame.maxY, width: labelsWidth, height: 24.calculateHeight()))
+        timeLabel = KTLabel(origin: viewAllCommentsLabel.bottomLeftPoint(), width: labelsWidth, height: 24)
         timeLabel.text = "3 HOURS AGO"
-        timeLabel.font = UIFont.systemFont(ofSize: 11.calculateHeight())
+        timeLabel.font = UIFont.systemFont(ofSize: 11.scaleForScreenWidth())
         self.addSubview(timeLabel)
         
         var height: CGFloat = 0
@@ -67,9 +63,5 @@ class CommentsView: UIView {
             height += view.frame.height
         }
         self.frame.size.height = height
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

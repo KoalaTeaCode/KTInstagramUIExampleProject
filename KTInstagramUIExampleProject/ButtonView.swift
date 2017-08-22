@@ -8,40 +8,35 @@
 
 import UIKit
 
-class ButtonView: UIView {
-    let heartButton = UIButton()
-    let commentButton = UIButton()
-    let shareButton = UIButton()
-    let bookmarkButton = UIButton()
+class ButtonView: KTResponsiveView {
+    var heartButton: KTButton!
+    var commentButton: KTButton!
+    var shareButton: KTButton!
+    var bookmarkButton: KTButton!
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override func performLayout() {
         // Heart Button
-        heartButton.frame = CGRect(x: 14.calculateWidth(), y: 13.calculateHeight(), width: 24.calculateWidth(), height: 22.calculateHeight())
+        heartButton = KTButton(topInset: 13, leftInset: 14, width: 24, height: 22)
         heartButton.setImage(#imageLiteral(resourceName: "Heart"), for: .normal)
         heartButton.imageView?.contentMode = .scaleAspectFit
         self.addSubview(heartButton)
         
         // Comment Button
-        commentButton.frame = CGRect(x: 55.calculateWidth(), y: 13.calculateHeight(), width: 24.calculateWidth(), height: 22.calculateHeight())
+        commentButton = KTButton(topInset: 13, leftInset: 55, width: 24, height: 22)
         commentButton.setImage(#imageLiteral(resourceName: "Comment"), for: .normal)
         commentButton.imageView?.contentMode = .scaleAspectFit
         self.addSubview(commentButton)
         
         // Share Button
-        shareButton.frame = CGRect(x: 94.calculateWidth(), y: 13.calculateHeight(), width: 24.calculateWidth(), height: 22.calculateHeight())
+        shareButton = KTButton(topInset: 13, leftInset: 94, width: 24, height: 22)
         shareButton.setImage(#imageLiteral(resourceName: "Message"), for: .normal)
         shareButton.imageView?.contentMode = .scaleAspectFit
         self.addSubview(shareButton)
         
         // Bookmark Button
-        bookmarkButton.frame = CGRect(x: 343.calculateWidth(), y: 13.calculateHeight(), width: 24.calculateWidth(), height: 22.calculateHeight())
+        bookmarkButton = KTButton(topInset: 13, leftInset: 343, width: 24, height: 22)
         bookmarkButton.setImage(#imageLiteral(resourceName: "Bookmark"), for: .normal)
         bookmarkButton.imageView?.contentMode = .scaleAspectFit
         self.addSubview(bookmarkButton)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

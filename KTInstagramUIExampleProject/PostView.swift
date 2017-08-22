@@ -11,23 +11,23 @@ import UIKit
 class PostView: UIView {
 
     var topBarView: TopBarView!
-    var postImageView: UIImageView!
+    var postImageView: KTEqualImageView!
     var buttonView: ButtonView!
     var commentsView: CommentsView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        topBarView = TopBarView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 54.calculateHeight()))
+        topBarView = TopBarView(width: 375, height: 54)
         self.addSubview(topBarView)
         
-        postImageView = UIImageView(frame: CGRect(x: 0, y: topBarView.frame.maxY, width: self.frame.width, height: self.frame.width))
+        postImageView = KTEqualImageView(origin: topBarView.bottomLeftPoint(), width: 375)
         postImageView.image = #imageLiteral(resourceName: "postImage")
         self.addSubview(postImageView)
-        
-        buttonView = ButtonView(frame: CGRect(x: 0, y: postImageView.frame.maxY, width: self.frame.width, height: 48.calculateHeight()))
+
+        buttonView = ButtonView(origin: postImageView.bottomLeftPoint(), width: 375, height: 48)
         self.addSubview(buttonView)
         
-        commentsView = CommentsView(frame: CGRect(x: 0, y: buttonView.frame.maxY, width: self.frame.width, height: 0))
+        commentsView = CommentsView(origin: buttonView.bottomLeftPoint(), width: 375, height: 0)
         self.addSubview(commentsView)
     }
     

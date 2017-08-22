@@ -18,6 +18,7 @@
 		166232371F423A4800B0202A /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166232361F423A4800B0202A /* ButtonView.swift */; };
 		166232391F423C0A00B0202A /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166232381F423C0A00B0202A /* PostView.swift */; };
 		1662323B1F423FB100B0202A /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1662323A1F423FB100B0202A /* CommentsView.swift */; };
+		166592211F4BBC160081CCD4 /* KTResponsiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166592201F4BBC160081CCD4 /* KTResponsiveView.swift */; };
 		166A292D1F43616C00C0E932 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166A292C1F43616C00C0E932 /* CustomViews.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +48,7 @@
 		166232361F423A4800B0202A /* ButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		166232381F423C0A00B0202A /* PostView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		1662323A1F423FB100B0202A /* CommentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
+		166592201F4BBC160081CCD4 /* KTResponsiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KTResponsiveView.swift; sourceTree = "<group>"; };
 		166A292C1F43616C00C0E932 /* CustomViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -97,6 +99,7 @@
 				166232361F423A4800B0202A /* ButtonView.swift */,
 				1662323A1F423FB100B0202A /* CommentsView.swift */,
 				166A292C1F43616C00C0E932 /* CustomViews.swift */,
+				166592201F4BBC160081CCD4 /* KTResponsiveView.swift */,
 			);
 			path = KTInstagramUIExampleProject;
 			sourceTree = "<group>";
@@ -167,17 +170,19 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Koala Tea";
 				TargetAttributes = {
 					1662320E1F42297900B0202A = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = 6MS9QWALYV;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 					166232221F42297900B0202A = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = 6MS9QWALYV;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 1662320E1F42297900B0202A;
 					};
@@ -232,6 +237,7 @@
 				166232371F423A4800B0202A /* ButtonView.swift in Sources */,
 				166232351F4230DA00B0202A /* TopBarView.swift in Sources */,
 				166232391F423C0A00B0202A /* PostView.swift in Sources */,
+				166592211F4BBC160081CCD4 /* KTResponsiveView.swift in Sources */,
 				166A292D1F43616C00C0E932 /* CustomViews.swift in Sources */,
 				166232131F42297900B0202A /* AppDelegate.swift in Sources */,
 				1662323B1F423FB100B0202A /* CommentsView.swift in Sources */,
@@ -286,7 +292,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -294,7 +302,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -337,7 +349,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -345,7 +359,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -380,7 +398,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "koala-tea.KTInstagramUIExampleProject";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -393,7 +412,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "koala-tea.KTInstagramUIExampleProject";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -407,7 +427,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "koala-tea.KTInstagramUIExampleProjectTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KTInstagramUIExampleProject.app/KTInstagramUIExampleProject";
 			};
 			name = Debug;
@@ -422,7 +443,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "koala-tea.KTInstagramUIExampleProjectTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KTInstagramUIExampleProject.app/KTInstagramUIExampleProject";
 			};
 			name = Release;
