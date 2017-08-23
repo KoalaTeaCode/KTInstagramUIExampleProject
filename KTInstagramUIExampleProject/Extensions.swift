@@ -59,7 +59,6 @@ extension CGFloat {
     }
 }
 
-
 extension Float {
     func scaleForScreenHeight() -> CGFloat {
         let screenHeight = UIScreen.main.bounds.height

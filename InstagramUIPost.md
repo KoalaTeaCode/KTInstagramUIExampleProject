@@ -1,29 +1,18 @@
-* A note: All of the concepts in this post are about creating views programmatically. I do not use Storyboards at all in my projects and therefore do not create views or layout constraints from the interface builder.
+*A note: All of the concepts in this post are about creating views programmatically. I do not use Storyboards at all in my projects and therefore do not create views or layout constraints from the interface builder.*
 
 Table of Contents:
-- [INTRO](#intro)
-- [ISSUES WITH AUTOLAYOUT](#issues-with-autolayout)
-- [Extensions & Math](#extensions-math)
-- [The make up of a view frame](#the-make-up-of-a-view-frame)
-- [Sketch design](#sketch-design)
-- [Coding the views](#coding-the-views)
-    - [Coding the Top Bar](#coding-the-top-bar)
-    - [Coding the Button View](#coding-the-button-view)
-    - [Coding the Comments View](#coding-the-comments-view)
-    - [Putting it all together](#putting-it-all-together)
-- [Drawbacks](#drawbacks)
-- [Conclusion](#conclusion)
+//@TODO: Create new table of contents after rewrite
 
 
 # INTRO
 
-Hello dear reader!
+Hello, dear reader!
 
 The other day as I was perusing reddit, I came across a post called something along the lines of "The case against AutoLayout". The post linked to an issue on the [IGList Github repo](https://github.com/Instagram/IGListKit), where Ryan Nystrom, a developer for Instagram, said ["Instagram doesn't use self-sizing-cells or auto layout at all"](https://github.com/Instagram/IGListKit/issues/508). This made me start thinking. I neither love nor hate AutoLayout but I've also never believed there was a different way to create views, and I certainly didn't think that a company as big as Instagram would shy away from the industry standard that is AutoLayout. 
 
 After researching and testing a few ways to create UI without AutoLayout, I believe I have found at least a solid starting point. Today we'll go over the basics and I'll show you how I got from a design in Sketch straight to Xcode using math and not a single AutoLayout constraint.
 
-I will go over some of my issues with AutoLayout, explain some of the math and view extensions we'll be using, go over our Sketch design, and finally start writing the code in our project. If you'd like to skip to a specific section, please see the table of contents above. Also you can just go straight to the [Github repo](https://github.com/KoalaTeaCode/KTInstagramUIExampleProject) for the full project.
+I will go over some of my issues with AutoLayout, explain some of the math and custom view classes we'll be using, go over our Sketch design, and finally start writing the code in our project. If you'd like to skip to a specific section, please see the table of contents above. Also you can just go straight to the [Github repo](https://github.com/KoalaTeaCode/KTInstagramUIExampleProject) for the full project.
 
 # ISSUES WITH AUTOLAYOUT
 
@@ -48,61 +37,18 @@ But the code isn't perfect and it leads me to my second issues:
 
 2. Insets/Constants are not scaled for each screen size. So going from a design on an iPhone to an iPad can be a mess.
 
-All of my apps are for iPhone and iPad because why not? None of my apps are made just for one screen size or use anything specific to just an iPhone so the only barrier is my UI. AutoLayout is supposed to bridge this gap, but say if when setting up my layout I set an inset of 10 for the left side of my view:
+All of my apps are for iPhone and iPad because why not? None of my apps are made just for one screen size or use anything specific to just an iPhone so the only barrier is my UI. AutoLayout is supposed to bridge this gap, but say if when setting up my layout I set an inset of 10 points for the left side of my view:
 ```swift
 myView.snp.makeConstraints { (make) -> Void in
     make.left.equalToSuperview().inset(10)
     make.right.equalToSuperview()
 }
 ```
-Well when I launch my app on the iPad simulator, the inset will still be 10 but the iPad has a much larger screen size. This leads to odd looking views that have been stretched instead of scaled proportionally. 
+Well when I launch my app on the iPad simulator, the inset will still be 10 points but the iPad has a much larger screen size. This leads to odd looking views that have been stretched instead of scaled proportionally. 
 
 These issues can seem small but they start to snowball when you're working on a project for a long time, working on multiple projects, or trying to get a UI design from Sketch exactly right to balance your designer's temperament.
 
-If you have no issue with AutoLayout, feel free to read this simply as a discussion about a different way to create UI and not a statement about the right or wrong way to create UI because there is none.
-
-# Extensions & Math
-Before we start creating views, we need two custom extension to help calculate the height, width, and position for our views when they are being scaled for different devices. These two extensions:
-
-```swift
-let iphone7Height: CGFloat = 667.0
-let iphone7Width: CGFloat = 375.0
-
-extension Int {
-    func calculateHeight() -> CGFloat {
-        let screenHeight = UIScreen.main.bounds.height
-        let divisor: CGFloat = iphone7Height / CGFloat(self)
-        let calculatedHeight = screenHeight / divisor
-        return calculatedHeight
-    }
-    
-    func calculateWidth() -> CGFloat {
-        let screenWidth = UIScreen.main.bounds.width
-        let divisor: CGFloat = iphone7Width / CGFloat(self)
-        let calculatedWidth = screenWidth / divisor
-        return calculatedWidth
-    }
-}
-
-// Extensions in use
-let calculatedWidth = 50.calculateWidth()
-let calculatedHeight = 50.calculateHeight()
-```
-
-These extensions follow a simple formula. 
-
-    CurrentScreenHeight / (iPhone7ScreenHeight / NumberToCalculate) = CalculatedHeight
-
-So for a view with a height of 50 on an iPhone 7 the calculations would be so:
-
-    iPhone 7: 50
-    iPhone 7+: 55.1724137931035
-    iPad Pro(9.7 Inch): 76.7616191904048
-    iPad Pro(12.9 Inch): 102.3988005997
-
-Now our view height stays proportional to the screen height with a simple extension.
-
-These extensions are built on top of calculating height and width in relation to an iPhone 7 screen simply because that is where my designs usually start from. You can obviously tweak these to your needs. Also in our project I have these same two extensions created for Double, Float, and CGFloat for simplicities sake. 
+If you have no issue with AutoLayout, feel free to read this simply as a discussion about a different way to create UI and not a statement about the right or wrong way to create UI, because there is none.
 
 # The make up of a view frame
 
@@ -124,6 +70,428 @@ view.frame.maxX
 
 We can use these properties to get the top left point, top middle point, and top right point of any view. The same goes for the y axis. Using these properties in conjunction we can easily snap views to each other.
 
+# Extensions, Math, and Custom Classes
+## Extensions/Math
+Before we start creating views, we need two custom extension to help calculate the height, width, and position for our views when they are being scaled for different devices. These two extensions:
+
+```swift
+let iphone7Height: CGFloat = 667.0
+let iphone7Width: CGFloat = 375.0
+
+extension Int {
+    func scaleForScreenHeight() -> CGFloat {
+        let screenHeight = UIScreen.main.bounds.height
+        let divisor: CGFloat = iphone7Height / CGFloat(self)
+        let calculatedHeight = screenHeight / divisor
+        return calculatedHeight
+    }
+    
+    func scaleForScreenWidth() -> CGFloat {
+        let screenWidth = UIScreen.main.bounds.width
+        let divisor: CGFloat = iphone7Width / CGFloat(self)
+        let calculatedWidth = screenWidth / divisor
+        return calculatedWidth
+    }
+}
+
+// Extensions in use
+let calculatedHeight = 50.scaleForScreenHeight()
+let calculatedWidth = 50.scaleForScreenWidth()
+```
+
+These extensions follow a simple formula. 
+
+    CurrentScreenHeight / (iPhone7ScreenHeight / NumberToCalculate) = CalculatedHeight
+
+So for a view with a height of 50 on an iPhone 7 the calculations would be so:
+
+    iPhone 7: 50
+    iPhone 7+: 55.1724137931035
+    iPad Pro(9.7 Inch): 76.7616191904048
+    iPad Pro(12.9 Inch): 102.3988005997
+
+Now our view height stays proportional to the screen height with a simple extension.
+
+These extensions are built on top of calculating height and width in relation to an iPhone 7 screen simply because that is where my designs usually start from. You can obviously tweak these to your needs. Also in our project I have these same two extensions created for Double, Float, and CGFloat for simplicities sake.
+
+I'll also probably move away from extensions in the future but for now this works for our general use.
+
+## UIView Extensions
+I also made up some UIView extensions to quickly get the points for the frame of a specific view. This will just clean up and shorten a lot of our code. Think of these just like "UIView.frame.center".
+```swift
+extension UIView {
+    func topRightPoint() -> CGPoint {
+        return CGPoint(x: self.frame.maxX, y: self.frame.minY)
+    }
+    
+    func topMidPoint() -> CGPoint {
+        return CGPoint(x: self.frame.midX, y: self.frame.minY)
+    }
+    
+    func topLeftPoint() -> CGPoint {
+        return CGPoint(x: self.frame.minX, y: self.frame.minY)
+    }
+    
+    func bottomRightPoint() -> CGPoint {
+        return CGPoint(x: self.frame.maxX, y: self.frame.maxY)
+    }
+    
+    func bottomMidPoint() -> CGPoint {
+        return CGPoint(x: self.frame.midX, y: self.frame.maxY)
+    }
+    
+    func bottomLeftPoint() -> CGPoint {
+        return CGPoint(x: self.frame.minX, y: self.frame.maxY)
+    }
+    
+    func leftMidPoint() -> CGPoint {
+        return CGPoint(x: self.frame.minX, y: self.frame.midY)
+    }
+    
+    func rightMidPoint() -> CGPoint {
+        return CGPoint(x: self.frame.maxX, y: self.frame.midY)
+    }
+}
+```
+
+Here's the full extensions file:
+```swift
+import UIKit
+
+let iphone7Height: CGFloat = 667.0
+let iphone7Width: CGFloat = 375.0
+
+extension Int {
+    func scaleForScreenHeight() -> CGFloat {
+        let screenHeight = UIScreen.main.bounds.height
+        let divisor: CGFloat = iphone7Height / CGFloat(self)
+        let calculatedHeight = screenHeight / divisor
+        return calculatedHeight
+    }
+    
+    func scaleForScreenWidth() -> CGFloat {
+        let screenWidth = UIScreen.main.bounds.width
+        let divisor: CGFloat = iphone7Width / CGFloat(self)
+        let calculatedWidth = screenWidth / divisor
+        return calculatedWidth
+    }
+}
+
+extension Double {
+    func scaleForScreenHeight() -> CGFloat {
+        let screenHeight = UIScreen.main.bounds.height
+        let divisor: CGFloat = iphone7Height / CGFloat(self)
+        let calculatedHeight = screenHeight / divisor
+        return calculatedHeight
+    }
+    
+    func scaleForScreenWidth() -> CGFloat {
+        let screenWidth = UIScreen.main.bounds.width
+        let divisor: CGFloat = iphone7Width / CGFloat(self)
+        let calculatedWidth = screenWidth / divisor
+        return calculatedWidth
+    }
+}
+
+extension CGFloat {
+    func scaleForScreenHeight() -> CGFloat {
+        let screenHeight = UIScreen.main.bounds.height
+        let divisor: CGFloat = iphone7Height / self
+        let calculatedHeight = screenHeight / divisor
+        return calculatedHeight
+    }
+    
+    func scaleForScreenWidth() -> CGFloat {
+        let screenWidth = UIScreen.main.bounds.width
+        let divisor: CGFloat = iphone7Width / self
+        let calculatedWidth = screenWidth / divisor
+        return calculatedWidth
+    }
+}
+
+extension Float {
+    func scaleForScreenHeight() -> CGFloat {
+        let screenHeight = UIScreen.main.bounds.height
+        let divisor: CGFloat = iphone7Height / CGFloat(self)
+        let calculatedHeight = screenHeight / divisor
+        return calculatedHeight
+    }
+    
+    func scaleForScreenWidth() -> CGFloat {
+        let screenWidth = UIScreen.main.bounds.width
+        let divisor: CGFloat = iphone7Width / CGFloat(self)
+        let calculatedWidth = screenWidth / divisor
+        return calculatedWidth
+    }
+}
+
+extension UIView {
+    func topRightPoint() -> CGPoint {
+        return CGPoint(x: self.frame.maxX, y: self.frame.minY)
+    }
+    
+    func topMidPoint() -> CGPoint {
+        return CGPoint(x: self.frame.midX, y: self.frame.minY)
+    }
+    
+    func topLeftPoint() -> CGPoint {
+        return CGPoint(x: self.frame.minX, y: self.frame.minY)
+    }
+    
+    func bottomRightPoint() -> CGPoint {
+        return CGPoint(x: self.frame.maxX, y: self.frame.maxY)
+    }
+    
+    func bottomMidPoint() -> CGPoint {
+        return CGPoint(x: self.frame.midX, y: self.frame.maxY)
+    }
+    
+    func bottomLeftPoint() -> CGPoint {
+        return CGPoint(x: self.frame.minX, y: self.frame.maxY)
+    }
+    
+    func leftMidPoint() -> CGPoint {
+        return CGPoint(x: self.frame.minX, y: self.frame.midY)
+    }
+    
+    func rightMidPoint() -> CGPoint {
+        return CGPoint(x: self.frame.maxX, y: self.frame.midY)
+    }
+}
+```
+
+## Custom Classes
+For usability we are going to abstract using these extensions to a few custom classes that will inherit from the vanilla UIView, UIButton, UILabel, and UIImageView.
+
+Here are the classes (You can put this all in one file for now):
+```swift
+import UIKit
+
+// Protocol to make sure we have common function to use to layout subviews
+// This is easier than overriding init() in every class
+protocol PerformLayoutProtocol {
+    func performLayout()
+}
+
+// The main responsive view. Our bread and butter going forward
+class KTResponsiveView: UIView, PerformLayoutProtocol {
+    // Custom width and height variables to quickly return the frame's width and height instead of typing .frame.width every time
+    var width: CGFloat {
+        get { return self.frame.width }
+        set { self.frame.size.width = newValue }
+    }
+    var height: CGFloat {
+        get { return self.frame.height }
+        set { self.frame.size.height = newValue }
+    }
+    
+    // We also have custom width/height variables so we can set intrinsice content size
+    // This only helps when using StackViews (We'll cover that later)
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: width, height: height)
+    }
+    
+    // Our custom init
+    //  - Parameters:
+    //      - origin: Point of origin (default is (0,0) like a grid)
+    //      - topInset: points from the top of immediate superview or origin when set (default is 0)
+    //      - leftInset: points from the left of immediate superview or origin when set (default is 0)
+    //      - width: width of view. Will be calculated using .scaleForScreenWidth Extension
+    //      - height: height of view. Will be calculated using .scaleForScreenHeight Extension
+    init(origin: CGPoint = CGPoint(x: 0,y: 0),
+         topInset: CGFloat = 0,
+         leftInset: CGFloat = 0,
+         width: CGFloat,
+         height: CGFloat) {
+        // Calculate position of new frame
+        let cx = origin.x + leftInset.scaleForScreenWidth()
+        let cy = origin.y + topInset.scaleForScreenHeight()
+        // Create new frame
+        let newFrame = CGRect(x: cx, y: cy, width: width.scaleForScreenWidth(), height: height.scaleForScreenHeight())
+        
+        super.init(frame: newFrame)
+        self.performLayout()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // This function is where we perform all our layout
+    func performLayout() {}
+}
+
+class KTButton: UIButton, PerformLayoutProtocol {
+    var width: CGFloat {
+        get { return self.frame.width }
+        set { self.frame.size.width = newValue }
+    }
+    var height: CGFloat {
+        get { return self.frame.height }
+        set { self.frame.size.height = newValue }
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: width, height: height)
+    }
+    
+    init(origin: CGPoint = CGPoint(x: 0,y: 0),
+         topInset: CGFloat = 0,
+         leftInset: CGFloat = 0,
+         width: CGFloat,
+         height: CGFloat) {
+        // Calculate position of new frame
+        let cx = origin.x + leftInset.scaleForScreenWidth()
+        let cy = origin.y + topInset.scaleForScreenHeight()
+        // Create new frame
+        let newFrame = CGRect(x: cx, y: cy, width: width.scaleForScreenWidth(), height: height.scaleForScreenHeight())
+        
+        super.init(frame: newFrame)
+        self.performLayout()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // This function is where we perform all our layout
+    func performLayout() {}
+}
+
+class KTLabel: UILabel, PerformLayoutProtocol {
+    var width: CGFloat {
+        get { return self.frame.width }
+        set { self.frame.size.width = newValue }
+    }
+    var height: CGFloat {
+        get { return self.frame.height }
+        set { self.frame.size.height = newValue }
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: width, height: height)
+    }
+    
+    init(origin: CGPoint = CGPoint(x: 0,y: 0),
+         topInset: CGFloat = 0,
+         leftInset: CGFloat = 0,
+         width: CGFloat,
+         height: CGFloat) {
+        // Calculate position of new frame
+        let cx = origin.x + leftInset.scaleForScreenWidth()
+        let cy = origin.y + topInset.scaleForScreenHeight()
+        // Create new frame
+        let newFrame = CGRect(x: cx, y: cy, width: width.scaleForScreenWidth(), height: height.scaleForScreenHeight())
+        
+        super.init(frame: newFrame)
+        self.performLayout()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // This function is where we perform all our layout
+    func performLayout() {}
+}
+
+class KTImageView: UIImageView, PerformLayoutProtocol {
+    var width: CGFloat {
+        get { return self.frame.width }
+        set { self.frame.size.width = newValue }
+    }
+    var height: CGFloat {
+        get { return self.frame.height }
+        set { self.frame.size.height = newValue }
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: width, height: height)
+    }
+    
+    init(origin: CGPoint = CGPoint(x: 0, y: 0),
+         topInset: CGFloat = 0,
+         leftInset: CGFloat = 0,
+         width: CGFloat,
+         height: CGFloat) {
+        // Calculate position of new frame
+        let cx = origin.x + leftInset.scaleForScreenWidth()
+        let cy = origin.y + topInset.scaleForScreenHeight()
+        // Create new frame
+        let newFrame = CGRect(x: cx, y: cy, width: width.scaleForScreenWidth(), height: height.scaleForScreenHeight())
+        
+        super.init(frame: newFrame)
+        self.performLayout()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // This function is where we perform all our layout
+    func performLayout() {}
+}
+
+// TBH, This is kind of hacked together
+class KTEqualImageView: UIImageView, PerformLayoutProtocol {
+    var width: CGFloat {
+        get { return self.frame.width }
+        set { self.frame.size.width = newValue }
+    }
+    var height: CGFloat {
+        get { return self.frame.height }
+        set { self.frame.size.height = newValue }
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: width, height: height)
+    }
+    
+    // Our custom init
+    //  - Parameters:
+    //      - origin: Point of origin (default is (0,0) like a grid)
+    //      - topInset: points from the top of immediate superview or origin when set (default is 0)
+    //      - leftInset: points from the left of immediate superview or origin when set (default is 0)
+    //      - width: width of view. Will be calculated using .scaleForScreenWidth Extension (default is 0)
+    //      - height: height of view. Will be calculated using .scaleForScreenHeight Extension (default is 0)
+    init(origin: CGPoint = CGPoint(x: 0,y: 0),
+         topInset: CGFloat = 0,
+         leftInset: CGFloat = 0,
+         width: CGFloat = 0,
+         height: CGFloat = 0) {
+        // Calculate position of new frame
+        let cx = origin.x + leftInset.scaleForScreenWidth()
+        let cy = origin.y + topInset.scaleForScreenHeight()
+        // Create new frame
+        var cWidth = width.scaleForScreenWidth()
+        var cHeight = height.scaleForScreenHeight()
+        
+        // Here we check if either width or height is 0 which we are assuming means that the variable that isn't 0 should be equal to the variable that has been set
+        if width == 0 {
+            cWidth = cHeight
+        }
+        if height == 0 {
+            cHeight = cWidth
+        }
+        let newFrame = CGRect(x: cx, y: cy, width: cWidth, height: cHeight)
+        
+        super.init(frame: newFrame)
+        self.performLayout()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // This function is where we perform all our layout
+    func performLayout() {}
+}
+```
+
+I know, bit of a code dump but the short version is this:
+
+We have a class for each type of view we will be using that inherits from said type. Each class has relatively the same init method with parameters we use to calculate a new frame for the view. I've also put some notes in the above code to better illustrate this.
+
 # Sketch design
 For the actual view we will recreate in Xcode, I have chosen the Post view from Instagram. This is a post I made of my puppy Bandit growing up way too fast. The design is simple and with this we can see how Instagram would not use AutoLayout at all in their app.
 
@@ -131,6 +499,7 @@ I won't go too in-depth into Sketch or our design. You can examine the image bel
 
 ![Full Design](http://i.imgur.com/N8Erfbp.png)
 
+//@TODO: Rewrite all dis
 # Coding the views
 Finally! Let's stop talking about concepts and get down to the code. 
 
@@ -427,14 +796,17 @@ On iPad Pro (12.9 inch):
 And we're done! Let's talk about drawbacks.
 
 # Drawbacks
-So the biggest drawback that you may be thinking about is rotating an iPhone screen. Though for this project, a lot of the apps I have created, and even most the apps I use on a daily basis don't rotate at all. This is an issue I'm experimenting with but it's not a huge deal for me at the moment.
+The biggest drawback for this workflow is that when in Xcode you won't be able to see the changes you make to your views until you run your app. Fixing that issue specifically is a whole other can of worms. Though the future of this project isn't to work with UI inside of Xcode. The future of this project is to export your designs directly from Sketch, or a similar design program. That way we keep our design and our code separate. This of course has it's own positives and negatives but for my projects, that is the workflow I am working towards.
 
-The second biggest drawback would be animation. I haven't experimented a lot with different animations using this workflow but things would have to be rethought from the perspectives of constraints and more on the focus of a view's anchor point.
+Another drawback you may be thinking about is rotating an iPhone screen. Though for this project, a lot of the apps I have created, and even most the apps I use on a daily basis don't rotate at all. This is an issue I'm experimenting with but it's not a huge deal for me at the moment.
+
+The third biggest drawback would be animation. I've been experimenting with this more recently and I can see it not being to hard to implement a quality animation library. We'll save that for another post though.
 
 Despite these drawbacks, I believe there are ways to get around them and I believe they aren't a critical issue at this time. 
 
+//@TODO: rewrite this too
 # Conclusion
-To conclude, this is a very new way of create UI that I have been experimenting with. The next steps would probably write a few to shorten the amount of code that needs to be written. Especially with writing ".calculateWidth()" every width and height. I'll continue to work with this and use this workflow in a few of my projects. I would recommend using the extensions at the very least in tandem with AutoLayout to properly calculate constraints.
+To conclude, this is a new way of creating UI that I have been experimenting with. The next steps would probably write a few to shorten the amount of code that needs to be written. Especially with writing ".calculateWidth()" every width and height. I'll continue to work with this and use this workflow in a few of my projects. I would recommend using the extensions at the very least in tandem with AutoLayout to properly calculate constraints.
 
 If you would like to see this workflow in an actual app check out my apps [Kibbl](https://itunes.apple.com/us/app/kibbl/id1241433983?ls=1&mt=8) and the [Software Engineering Daily Podcast App](https://itunes.apple.com/us/app/software-engineering-daily-podcast-app/id1253734426?ls=1&mt=8).
 
