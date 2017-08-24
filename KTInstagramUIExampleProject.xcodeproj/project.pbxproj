@@ -18,7 +18,6 @@
 		166232371F423A4800B0202A /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166232361F423A4800B0202A /* ButtonView.swift */; };
 		166232391F423C0A00B0202A /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166232381F423C0A00B0202A /* PostView.swift */; };
 		1662323B1F423FB100B0202A /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1662323A1F423FB100B0202A /* CommentsView.swift */; };
-		166592211F4BBC160081CCD4 /* KTResponsiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166592201F4BBC160081CCD4 /* KTResponsiveView.swift */; };
 		166A292D1F43616C00C0E932 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166A292C1F43616C00C0E932 /* CustomViews.swift */; };
 /* End PBXBuildFile section */
 
@@ -48,7 +47,6 @@
 		166232361F423A4800B0202A /* ButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		166232381F423C0A00B0202A /* PostView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		1662323A1F423FB100B0202A /* CommentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
-		166592201F4BBC160081CCD4 /* KTResponsiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KTResponsiveView.swift; sourceTree = "<group>"; };
 		166A292C1F43616C00C0E932 /* CustomViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -99,7 +97,6 @@
 				166232361F423A4800B0202A /* ButtonView.swift */,
 				1662323A1F423FB100B0202A /* CommentsView.swift */,
 				166A292C1F43616C00C0E932 /* CustomViews.swift */,
-				166592201F4BBC160081CCD4 /* KTResponsiveView.swift */,
 			);
 			path = KTInstagramUIExampleProject;
 			sourceTree = "<group>";
@@ -237,7 +234,6 @@
 				166232371F423A4800B0202A /* ButtonView.swift in Sources */,
 				166232351F4230DA00B0202A /* TopBarView.swift in Sources */,
 				166232391F423C0A00B0202A /* PostView.swift in Sources */,
-				166592211F4BBC160081CCD4 /* KTResponsiveView.swift in Sources */,
 				166A292D1F43616C00C0E932 /* CustomViews.swift in Sources */,
 				166232131F42297900B0202A /* AppDelegate.swift in Sources */,
 				1662323B1F423FB100B0202A /* CommentsView.swift in Sources */,

@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        postView = PostView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 960.scaleForScreenHeight()))
+        postView = PostView(width: 375, height: 960)
         self.view.addSubview(postView)
         
 //        let ktView = KTResponsiveView(width: 250, height: 250, topInset: 10, leftInset: 10)

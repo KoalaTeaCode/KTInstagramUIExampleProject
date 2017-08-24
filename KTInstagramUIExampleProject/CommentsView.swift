@@ -9,7 +9,6 @@
 import UIKit
 
 class CommentsView: KTResponsiveView {
-    
     var likeLabel: KTLabel!
     var descriptionLabel: KTLabel!
     var moreLabel: KTLabel!
