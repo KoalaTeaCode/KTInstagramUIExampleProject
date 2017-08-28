@@ -815,4 +815,4 @@ My Twitter: https://twitter.com/TheMrHolliday
 
 My Reddit: https://www.reddit.com/user/Misterholliday/
 
-[@TODO: INSERT NEWSLETTER LINK HERE]
+If you liked this post, sign up for the [KoalaTea Newsletter](http://eepurl.com/cZNRh5). You'll get notifications when we have new blog posts and we'll be working on even more content soon!
