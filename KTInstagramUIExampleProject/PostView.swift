@@ -8,18 +8,18 @@
 
 import UIKit
 
-class PostView: KTResponsiveView {
+class PostView: UIView {
 
     var topBarView: TopBarView!
-    var postImageView: KTEqualImageView!
+    var postImageView: UIImageView!
     var buttonView: ButtonView!
     var commentsView: CommentsView!
     
     override func performLayout() {
         topBarView = TopBarView(width: 375, height: 54)
         self.addSubview(topBarView)
-        
-        postImageView = KTEqualImageView(origin: topBarView.bottomLeftPoint(), width: 375)
+
+        postImageView = UIImageView(origin: topBarView.bottomLeftPoint(), width: 375, keepEqual: true)
         postImageView.image = #imageLiteral(resourceName: "postImage")
         self.addSubview(postImageView)
         

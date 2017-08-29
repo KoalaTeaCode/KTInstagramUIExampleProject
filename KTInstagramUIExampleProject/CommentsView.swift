@@ -8,17 +8,17 @@
 
 import UIKit
 
-class CommentsView: KTResponsiveView {
-    var likeLabel: KTLabel!
-    var descriptionLabel: KTLabel!
-    var moreLabel: KTLabel!
-    var viewAllCommentsLabel: KTLabel!
-    var timeLabel: KTLabel!
+class CommentsView: UIView {
+    var likeLabel: UILabel!
+    var descriptionLabel: UILabel!
+    var moreLabel: UILabel!
+    var viewAllCommentsLabel: UILabel!
+    var timeLabel: UILabel!
 
     override func performLayout() {
         let labelsWidth: CGFloat = 375 - (16 * 2)
         
-        likeLabel = KTLabel(leftInset: 16, width: labelsWidth, height: 18)
+        likeLabel = UILabel(leftInset: 16, width: labelsWidth, height: 18)
         let likesCount = 287
         let likesString = "likes"
         
@@ -26,7 +26,7 @@ class CommentsView: KTResponsiveView {
         likeLabel.text = String(likesCount) + " " + likesString
         self.addSubview(likeLabel)
         
-        descriptionLabel = KTLabel(origin: likeLabel.bottomLeftPoint(), width: labelsWidth, height: 42)
+        descriptionLabel = UILabel(origin: likeLabel.bottomLeftPoint(), width: labelsWidth, height: 42)
         let username = "themisterholliday"
         let description = "Hey this is an awesome description"
         
@@ -47,12 +47,12 @@ class CommentsView: KTResponsiveView {
         descriptionLabel.attributedText = fullMutableString
         self.addSubview(descriptionLabel)
         
-        viewAllCommentsLabel = KTLabel(origin: descriptionLabel.bottomLeftPoint(), width: labelsWidth, height: 20)
+        viewAllCommentsLabel = UILabel(origin: descriptionLabel.bottomLeftPoint(), width: labelsWidth, height: 20)
         viewAllCommentsLabel.text = "View all 5 comments"
         viewAllCommentsLabel.font = UIFont.systemFont(ofSize: 14.scaleForScreenWidth())
         self.addSubview(viewAllCommentsLabel)
         
-        timeLabel = KTLabel(origin: viewAllCommentsLabel.bottomLeftPoint(), width: labelsWidth, height: 24)
+        timeLabel = UILabel(origin: viewAllCommentsLabel.bottomLeftPoint(), width: labelsWidth, height: 24)
         timeLabel.text = "3 HOURS AGO"
         timeLabel.font = UIFont.systemFont(ofSize: 11.scaleForScreenWidth())
         self.addSubview(timeLabel)

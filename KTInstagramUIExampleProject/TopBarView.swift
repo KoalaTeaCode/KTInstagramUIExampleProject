@@ -8,16 +8,16 @@
 
 import UIKit
 
-class TopBarView: KTResponsiveView {
-    var userImageView: KTEqualImageView!
-    var userLabel: KTLabel!
-    var ellipsesImageView: KTImageView!
+class TopBarView: UIView {
+    var userImageView: UIImageView!
+    var userLabel: UILabel!
+    var ellipsesImageView: UIImageView!
     
     override func performLayout() {
         // Set user image frame
         // The user image needs to be a cirle so we use "calculateHeight" for both width and height
-        userImageView = KTEqualImageView(topInset: 10, leftInset: 10, height: 32)
-        
+        userImageView = UIImageView(topInset: 10, leftInset: 10, height: 32, keepEqual: true)
+
         // Set corner radius to make view a circle
         userImageView.layer.cornerRadius = userImageView.frame.height / 2
         
@@ -32,7 +32,7 @@ class TopBarView: KTResponsiveView {
         
         // We use 284 here instead of userImageView.frame.maxX to show that you can either snap to another view or you can give the exacty inset from the super view
         // Though views may overlap this way
-        userLabel = KTLabel(topInset: 10, leftInset: 52, width: 284, height: 32)
+        userLabel = UILabel(topInset: 10, leftInset: 52, width: 284, height: 32)
         userLabel.text = "themisterholliday"
         
         // Set font size and calculate width so font size scales
@@ -41,7 +41,7 @@ class TopBarView: KTResponsiveView {
         self.addSubview(userLabel)
         
         // It's important to note that we will be able to scale the "ImageView" but the Image will only scale proportionally if you set the correct contentMode
-        ellipsesImageView = KTImageView(topInset: 10, leftInset: 346, width: 14, height: 32)
+        ellipsesImageView = UIImageView(topInset: 10, leftInset: 346, width: 14, height: 32)
         ellipsesImageView.image = #imageLiteral(resourceName: "Ellipses")
         
         ellipsesImageView.contentMode = .scaleAspectFit

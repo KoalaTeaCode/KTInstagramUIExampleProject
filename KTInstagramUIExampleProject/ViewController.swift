@@ -15,8 +15,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        postView = PostView(width: 375, height: 960)
-//        self.view.addSubview(postView)
+        postView = PostView(width: 375, height: 960)
+        self.view.addSubview(postView)
     
     }
 
