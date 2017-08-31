@@ -1,4 +1,4 @@
-*A note: All of the concepts in this post are about creating views programmatically. I do not use Storyboards at all in my projects and therefore do not create views or layout constraints from the interface builder.*
+***Note:** All of the concepts in this post are about creating views programmatically. I do not use Storyboards at all in my projects and therefore do not create views or layout constraints from the interface builder.*
 
 Table of Contents:
 - [Intro](#intro)
@@ -7,7 +7,7 @@ Table of Contents:
 - [Extensions, Math, and Custom Classes](#extensions-math-and-custom-classes)
     - [Extensions/Math](#extensionsmath)
     - [UIView Extensions](#uiview-extensions)
-    - [Custom Classes](#custom-classes)
+    - [Extending UIView](#extending-uiview)
 - [Sketch design](#sketch-design)
 - [Coding the views](#coding-the-views)
     - [Coding the Top Bar](#coding-the-top-bar)
@@ -280,38 +280,21 @@ extension UIView {
 }
 ```
 
-## Custom Classes
-For usability we are going to abstract using these extensions to a few custom classes that will inherit from the vanilla UIView, UIButton, UILabel, and UIImageView.
+## Extending UIView
+Alright so while writing this article I've gone back and forth on creating custom classes, inheriting a protocol, and copy pasting the same init method with a few tweaks, but honestly my code just looked ugly. Like really ugly. Though that's where you need to start. Looking over my code I figured out a way to build a protocol, extend the protocol, then extend the UIView to conform to my protocol. With that it rendered all my custom classes obsolete and I turned 227 lines of code to 55 lines of code. 
 
-Here are the classes (You can put this all in one file for now):
-
+So to show you a bit of my process here is some of the code before: 
 ```swift
 import UIKit
 
 // Protocol to make sure we have common function to use to layout subviews
 // This is easier than overriding init() in every class
-protocol PerformLayoutProtocol {
+protocol KTLayoutProtocol {
+    init()
     func performLayout()
 }
 
-// The main responsive view. Our bread and butter going forward
-class KTResponsiveView: UIView, PerformLayoutProtocol {
-    // Custom width and height variables to quickly return the frame's width and height instead of typing .frame.width every time
-    var width: CGFloat {
-        get { return self.frame.width }
-        set { self.frame.size.width = newValue }
-    }
-    var height: CGFloat {
-        get { return self.frame.height }
-        set { self.frame.size.height = newValue }
-    }
-    
-    // We also have custom width/height variables so we can set intrinsice content size
-    // This only helps when using StackViews (We'll cover that later)
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: width, height: height)
-    }
-    
+extension KTLayoutProtocol where Self: UIView {
     // Our custom init
     //  - Parameters:
     //      - origin: Point of origin (default is (0,0) like a grid)
@@ -322,197 +305,50 @@ class KTResponsiveView: UIView, PerformLayoutProtocol {
     init(origin: CGPoint = CGPoint(x: 0,y: 0),
          topInset: CGFloat = 0,
          leftInset: CGFloat = 0,
-         width: CGFloat,
-         height: CGFloat) {
-        // Calculate position of new frame
-        let cx = origin.x + leftInset.scaleForScreenWidth()
-        let cy = origin.y + topInset.scaleForScreenHeight()
-        // Create new frame
-        let newFrame = CGRect(x: cx, y: cy, width: width.scaleForScreenWidth(), height: height.scaleForScreenHeight())
-        
-        super.init(frame: newFrame)
-        self.performLayout()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // This function is where we perform all our layout
-    func performLayout() {}
-}
-
-class KTButton: UIButton, PerformLayoutProtocol {
-    var width: CGFloat {
-        get { return self.frame.width }
-        set { self.frame.size.width = newValue }
-    }
-    var height: CGFloat {
-        get { return self.frame.height }
-        set { self.frame.size.height = newValue }
-    }
-    
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: width, height: height)
-    }
-    
-    init(origin: CGPoint = CGPoint(x: 0,y: 0),
-         topInset: CGFloat = 0,
-         leftInset: CGFloat = 0,
-         width: CGFloat,
-         height: CGFloat) {
-        // Calculate position of new frame
-        let cx = origin.x + leftInset.scaleForScreenWidth()
-        let cy = origin.y + topInset.scaleForScreenHeight()
-        // Create new frame
-        let newFrame = CGRect(x: cx, y: cy, width: width.scaleForScreenWidth(), height: height.scaleForScreenHeight())
-        
-        super.init(frame: newFrame)
-        self.performLayout()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // This function is where we perform all our layout
-    func performLayout() {}
-}
-
-class KTLabel: UILabel, PerformLayoutProtocol {
-    var width: CGFloat {
-        get { return self.frame.width }
-        set { self.frame.size.width = newValue }
-    }
-    var height: CGFloat {
-        get { return self.frame.height }
-        set { self.frame.size.height = newValue }
-    }
-    
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: width, height: height)
-    }
-    
-    init(origin: CGPoint = CGPoint(x: 0,y: 0),
-         topInset: CGFloat = 0,
-         leftInset: CGFloat = 0,
-         width: CGFloat,
-         height: CGFloat) {
-        // Calculate position of new frame
-        let cx = origin.x + leftInset.scaleForScreenWidth()
-        let cy = origin.y + topInset.scaleForScreenHeight()
-        // Create new frame
-        let newFrame = CGRect(x: cx, y: cy, width: width.scaleForScreenWidth(), height: height.scaleForScreenHeight())
-        
-        super.init(frame: newFrame)
-        self.performLayout()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // This function is where we perform all our layout
-    func performLayout() {}
-}
-
-class KTImageView: UIImageView, PerformLayoutProtocol {
-    var width: CGFloat {
-        get { return self.frame.width }
-        set { self.frame.size.width = newValue }
-    }
-    var height: CGFloat {
-        get { return self.frame.height }
-        set { self.frame.size.height = newValue }
-    }
-    
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: width, height: height)
-    }
-    
-    init(origin: CGPoint = CGPoint(x: 0, y: 0),
-         topInset: CGFloat = 0,
-         leftInset: CGFloat = 0,
-         width: CGFloat,
-         height: CGFloat) {
-        // Calculate position of new frame
-        let cx = origin.x + leftInset.scaleForScreenWidth()
-        let cy = origin.y + topInset.scaleForScreenHeight()
-        // Create new frame
-        let newFrame = CGRect(x: cx, y: cy, width: width.scaleForScreenWidth(), height: height.scaleForScreenHeight())
-        
-        super.init(frame: newFrame)
-        self.performLayout()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // This function is where we perform all our layout
-    func performLayout() {}
-}
-
-// TBH, This is kind of hacked together
-class KTEqualImageView: UIImageView, PerformLayoutProtocol {
-    var width: CGFloat {
-        get { return self.frame.width }
-        set { self.frame.size.width = newValue }
-    }
-    var height: CGFloat {
-        get { return self.frame.height }
-        set { self.frame.size.height = newValue }
-    }
-    
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: width, height: height)
-    }
-    
-    // Our custom init
-    //  - Parameters:
-    //      - origin: Point of origin (default is (0,0) like a grid)
-    //      - topInset: points from the top of immediate superview or origin when set (default is 0)
-    //      - leftInset: points from the left of immediate superview or origin when set (default is 0)
-    //      - width: width of view. Will be calculated using .scaleForScreenWidth Extension (default is 0)
-    //      - height: height of view. Will be calculated using .scaleForScreenHeight Extension (default is 0)
-    init(origin: CGPoint = CGPoint(x: 0,y: 0),
-         topInset: CGFloat = 0,
-         leftInset: CGFloat = 0,
          width: CGFloat = 0,
-         height: CGFloat = 0) {
+         height: CGFloat = 0,
+         keepEqual: Bool = false) {
+        
         // Calculate position of new frame
         let cx = origin.x + leftInset.scaleForScreenWidth()
         let cy = origin.y + topInset.scaleForScreenHeight()
-        // Create new frame
+        
+        // Calculate width and height
         var cWidth = width.scaleForScreenWidth()
         var cHeight = height.scaleForScreenHeight()
         
         // Here we check if either width or height is 0 which we are assuming means that the variable that isn't 0 should be equal to the variable that has been set
-        if width == 0 {
-            cWidth = cHeight
+        if keepEqual {
+            if width == 0 {
+                cWidth = cHeight
+            }
+            if height == 0 {
+                cHeight = cWidth
+            }
         }
-        if height == 0 {
-            cHeight = cWidth
-        }
+        
+        // Create new frame
         let newFrame = CGRect(x: cx, y: cy, width: cWidth, height: cHeight)
         
-        super.init(frame: newFrame)
+        self.init()
+        self.frame = newFrame
         self.performLayout()
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // This function is where we perform all our layout
-    func performLayout() {}
+}
+
+// Everything boiled down to a single extension
+extension UIView: KTLayoutProtocol {
+    @objc public func performLayout() {}
 }
 ```
 
-I know, bit of a code dump but the short version is this:
+Oh man that looks good. So let's explain a bit of what we're doing here. First we create a protocol with an init function and a function called "performLayout". This makes sure that we implement both in our extension. We'll be using the init method to initialize our view and calculate a new frame for the view. Extending UIView, means that any class that inherits from UIView will also have this custom init method.
 
-We have a class for each type of view we will be using that inherits from said type. Each class has relatively the same init method with parameters we use to calculate a new frame for the view. I've also put some notes in the above code to better illustrate this.
+After that we call "performLayout" in the init method so we can use that method in the UIView extension and our custom classes. The "performLayout" method is where we'll do anything specific to whatever view and it will always be called during initialization so we don't have to override our init method. You'll see how we use this in a class in a bit. 
 
+***Note:** We had to add "@objc" to our performLayout function in the UIView extension because in Swift 4 there is either a bug or a new syntax for the Swift 3 inference for @objc and I kept getting warnings about it.*
+
+*I put in this bit with my old code to highlight that everyone writes ugly code and that you are supposed to write ugly code. My ugly code worked and then when I started writing this article it was confusing to ME. So I rewrote everything, even most of the article. I've done this about 4 times just so far. Just an interesting tidbit. Never be ashamed of your code. Please resume.*
 # Sketch design
 For the actual view we will recreate in Xcode, I have chosen the Post view from Instagram. This is a post I made of my puppy Bandit growing up way too fast. The design is simple and with this we can see how Instagram would not use AutoLayout at all in their app.
 
@@ -525,36 +361,36 @@ Finally! Let's stop talking about concepts and get down to the code.
 ## Coding the Top Bar
 ![Top Bar View](http://i.imgur.com/nCo0VGf.png)
 
-Create a new Swift file or create a UIView and call it "TopBarView". Make sure this view inherits from "KTResponsiveView". The let's create variables for all of our views.
+Create a new Swift file or create a UIView and call it "TopBarView". Make sure this view inherits from UIView. The let's create variables for all of our views.
 
 ```swift
 import UIKit
 
-class TopBarView: KTResponsiveView {
-    var userImageView: KTEqualImageView!
-    var userLabel: KTLabel!
-    var ellipsesImageView: KTImageView!
+class TopBarView: UIView {
+    var userImageView: UIImageView!
+    var userLabel: UILabel!
+    var ellipsesImageView: UIImageView!
 }
 ```
-And instead of overriding the KTResponsive View's init methods, we will override the "performLayout" method.
+And instead of overriding the UIView's init methods, we will override the "performLayout" method.
 
 ```swift
 override func performLayout() {
 }
 ```
-The "performLayout" method works like an init method because we call "performLayout" during the KTResponsiveView's init method. So inside the performLayout method we'll start with the userImageView which contains our user's image(go figure). We will go ahead and initialize a new KTEqualImageView. We'll also make the view circular and add an image.
+The "performLayout" method works like an init method because we call "performLayout" during the UIView's init method. So inside the performLayout method we'll start with the userImageView which contains our user's image (go figure). We will go ahead and initialize a new UIImageView, using our custom init method. We'll also make the view circular and add an image.
 
 ```swift
-userImageView = KTEqualImageView(topInset: 10, leftInset: 10, height: 32)
+userImageView = UIImageView(topInset: 10, leftInset: 10, height: 32, keepEqual: true)
 userImageView.layer.cornerRadius = userImageView.frame.height / 2
 userImageView.clipsToBounds = true
 userImageView.image = #imageLiteral(resourceName: "userImage")
 
 self.addSubview(userImageView)
 ```
-The origin of the userImageView is by default is the origin of it's superview, TopBarView. So our userImageView will be 10 points from the top of the top TopBarView and 10 points from the left of the left of TopBarView. We set just the height to 32 and since we're using a KTEqualImageView the width will equal the height at all times (If you set just the width for a KTEqualImageView, the height will always equal the width). 
+The origin of the userImageView is by default is the origin of it's superview, TopBarView. So our userImageView will be 10 points from the top of the top TopBarView and 10 points from the left of the left of TopBarView. We set just the height to 32 and set "keepEqual" to true so the width will equal the height at all times (If you set just the width and "keepEqual" to true, the height will always equal the width). 
 
-We use a KTEqualImageview here because the height and width for every other view is scaled by different formulas. If we didn't use a KTEqualImageView, when we scale a circular view the view will become more of an oval.
+We use the "keepEqual" parameter here because the height and width for every other view is scaled by different formulas. If we didn't set "keepEqual" to true, when we scale a circular view the view will become more of an oval.
 
 Then we set our corner radius to be the height of the userImageView divided by 2. That will round the view.
 
@@ -568,22 +404,31 @@ Moving on to the userLabel which will contain the username of our user. Here's t
  
 ```swift
 ...
-userLabel = KTLabel(topInset: 10, leftInset: 52, width: 284, height: 32)
+userLabel = UILabel(topInset: 10, leftInset: 52, width: 284, height: 32)
 userLabel.text = "themisterholliday"
         
 userLabel.font = UIFont.systemFont(ofSize: 15.scaleForScreenWidth())
 self.addSubview(userLabel)
 ```
 
-We create a new KTLabel with the same topInset as our userImageView and with a leftInset of 52 so our userLabel origin will start at (10,52) inside our superview which is TopBarView. We also set our font with a size of 15 and use the .scaleForScreenWidth to get an approximate scale for the font to screen size. This isn't a perfect way to scale font right now but I'm working on a better solution.
+We create a new UILabel with the same topInset as our userImageView and with a leftInset of 52 so our userLabel origin will start at (10,52) inside our superview which is TopBarView. We also set our font with a size of 15 and use the .scaleForScreenWidth to get an approximate scale for the font to screen size. This isn't a perfect way to scale font right now but I'm working on a better solution.
 
 Then of course we add the userLabel as a subview to TopBarView.
 
 *Side note: We could easily calculate the inset from the right side of the userImageView like so:*
 ```swift
-userLabel = KTLabel(origin: userImageView.topRightPoint(), leftInset: 10, width: 284, height: 32)
+userLabel = UILabel(origin: userImageView.topRightPoint(), leftInset: 10, width: 284, height: 32)
 ```
 The inset is 10 from the right side of the userImageView which we can find using userImageView.topRightPoint().
+
+Last we have the ellipsesImageView. The code for this imageView is almost exactly the same as the userImageView.
+```swift
+ellipsesImageView = UIImageView(topInset: 10, leftInset: 346, width: 14, height: 32)
+ellipsesImageView.image = #imageLiteral(resourceName: "Ellipses")
+        
+ellipsesImageView.contentMode = .scaleAspectFit
+self.addSubview(ellipsesImageView)
+```
 
 And we're finished with the TopBarView.
 
@@ -594,33 +439,33 @@ And we're finished with the TopBarView.
 ```swift
 import UIKit
 
-class ButtonView: KTResponsiveView {
-    var heartButton: KTButton!
-    var commentButton: KTButton!
-    var shareButton: KTButton!
-    var bookmarkButton: KTButton!
+class ButtonView: UIView {
+    var heartButton: UIButton!
+    var commentButton: UIButton!
+    var shareButton: UIButton!
+    var bookmarkButton: UIButton!
     
     override func performLayout() {
         // Heart Button
-        heartButton = KTButton(topInset: 13, leftInset: 14, width: 24, height: 22)
+        heartButton = UIButton(topInset: 13, leftInset: 14, width: 24, height: 22)
         heartButton.setImage(#imageLiteral(resourceName: "Heart"), for: .normal)
         heartButton.imageView?.contentMode = .scaleAspectFit
         self.addSubview(heartButton)
         
         // Comment Button
-        commentButton = KTButton(topInset: 13, leftInset: 55, width: 24, height: 22)
+        commentButton = UIButton(topInset: 13, leftInset: 55, width: 24, height: 22)
         commentButton.setImage(#imageLiteral(resourceName: "Comment"), for: .normal)
         commentButton.imageView?.contentMode = .scaleAspectFit
         self.addSubview(commentButton)
         
         // Share Button
-        shareButton = KTButton(topInset: 13, leftInset: 94, width: 24, height: 22)
+        shareButton = UIButton(topInset: 13, leftInset: 94, width: 24, height: 22)
         shareButton.setImage(#imageLiteral(resourceName: "Message"), for: .normal)
         shareButton.imageView?.contentMode = .scaleAspectFit
         self.addSubview(shareButton)
         
         // Bookmark Button
-        bookmarkButton = KTButton(topInset: 13, leftInset: 343, width: 24, height: 22)
+        bookmarkButton = UIButton(topInset: 13, leftInset: 343, width: 24, height: 22)
         bookmarkButton.setImage(#imageLiteral(resourceName: "Bookmark"), for: .normal)
         bookmarkButton.imageView?.contentMode = .scaleAspectFit
         self.addSubview(bookmarkButton)
@@ -634,12 +479,12 @@ The comments view isn't super complicated but we do a few new concepts that I'll
 ```swift
 import UIKit
 
-class CommentsView: KTResponsiveView {
-    var likeLabel: KTLabel!
-    var descriptionLabel: KTLabel!
-    var moreLabel: KTLabel!
-    var viewAllCommentsLabel: KTLabel!
-    var timeLabel: KTLabel!
+class CommentsView: UIView {
+    var likeLabel: UILabel!
+    var descriptionLabel: UILabel!
+    var moreLabel: UILabel!
+    var viewAllCommentsLabel: UILabel!
+    var timeLabel: UILabel!
 }
 ```
 
@@ -653,7 +498,7 @@ In our performLayout method we will start with our first label:
 ```swift
 let labelsWidth: CGFloat = 375 - (16 * 2)
         
-likeLabel = KTLabel(leftInset: 16, width: labelsWidth, height: 18)
+likeLabel = UILabel(leftInset: 16, width: labelsWidth, height: 18)
 let likesCount = 287
 let likesString = "likes"
         
@@ -666,7 +511,7 @@ We create a variable called "labelsWidth" because all our labels will have the s
 
 Next we create our description label:
 ```swift
-descriptionLabel = KTLabel(origin: likeLabel.bottomLeftPoint(), width: labelsWidth, height: 42)
+descriptionLabel = UILabel(origin: likeLabel.bottomLeftPoint(), width: labelsWidth, height: 42)
 let username = "themisterholliday"
 let description = "Hey this is an awesome description"
 
@@ -694,7 +539,7 @@ Our second to last label is the viewAllCommentsLabel. In the actual Instagram ap
 
 Here is the viewAllCommentsLabel code:
 ```swift
-viewAllCommentsLabel = KTLabel(origin: descriptionLabel.bottomLeftPoint(), width: labelsWidth, height: 20)
+viewAllCommentsLabel = UILabel(origin: descriptionLabel.bottomLeftPoint(), width: labelsWidth, height: 20)
 viewAllCommentsLabel.text = "View all 5 comments"
 viewAllCommentsLabel.font = UIFont.systemFont(ofSize: 14.scaleForScreenWidth())
 self.addSubview(viewAllCommentsLabel)
@@ -702,7 +547,7 @@ self.addSubview(viewAllCommentsLabel)
 
 Our last label is the timeLabel. Nothing complicated here:
 ```swift
-timeLabel = KTLabel(origin: viewAllCommentsLabel.bottomLeftPoint(), width: labelsWidth, height: 24)
+timeLabel = UILabel(origin: viewAllCommentsLabel.bottomLeftPoint(), width: labelsWidth, height: 24)
 timeLabel.text = "3 HOURS AGO"
 timeLabel.font = UIFont.systemFont(ofSize: 11.scaleForScreenWidth())
 self.addSubview(timeLabel)
@@ -727,9 +572,9 @@ Start out like we do with our other views:
 ```swift
 import UIKit
 
-class PostView: KTResponsiveView {
+class PostView: UIView {
     var topBarView: TopBarView!
-    var postImageView: KTEqualImageView!
+    var postImageView: UIImageView!
     var buttonView: ButtonView!
     var commentsView: CommentsView!
     
@@ -745,7 +590,7 @@ Let's initialize all our views in the performLayout method:
 topBarView = TopBarView(width: 375, height: 54)
 self.addSubview(topBarView)
 
-postImageView = KTEqualImageView(origin: topBarView.bottomLeftPoint(), width: 375)
+postImageView = UIImageView(origin: topBarView.bottomLeftPoint(), width: 375)
 postImageView.image = #imageLiteral(resourceName: "postImage")
 self.addSubview(postImageView)
 
